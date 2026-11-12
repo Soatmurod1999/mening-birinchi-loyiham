@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VERIFIK PRO — Biznesingizni avtomatlashtiring</title>
+    <title>VERIFIK PRO — HRM & Face ID Platform</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
         body {
@@ -18,8 +18,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: rgba(255, 255, 255, 0.75);
+            padding: 18px 8%;
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
@@ -33,8 +33,22 @@
         .nav-links a { text-decoration: none; color: #475569; font-size: 15px; font-weight: 500; transition: 0.2s; }
         .nav-links a:hover { color: #3b82f6; }
 
-        .auth-buttons { display: flex; align-items: center; gap: 16px; }
-        .btn-login { text-decoration: none; color: #1e293b; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 99px; transition: 0.2s; }
+        .auth-buttons { display: flex; align-items: center; gap: 12px; }
+        
+        /* Til tanlash tugmasi */
+        .lang-select {
+            padding: 8px 12px;
+            border-radius: 99px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #1e293b;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-login { text-decoration: none; color: #1e293b; font-weight: 600; font-size: 14px; padding: 10px 16px; border-radius: 99px; transition: 0.2s; }
         .btn-login:hover { background: #f1f5f9; }
         .btn-trial {
             text-decoration: none;
@@ -65,13 +79,13 @@
             margin-bottom: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
-        .hero h1 { font-size: 54px; font-weight: 800; line-height: 1.15; letter-spacing: -1px; margin-bottom: 20px; color: #0f172a; }
+        .hero h1 { font-size: 52px; font-weight: 800; line-height: 1.15; letter-spacing: -1px; margin-bottom: 20px; color: #0f172a; }
         .hero h1 span {
             background: linear-gradient(90deg, #4f46e5, #0ea5e9);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .hero p { font-size: 18px; color: #64748b; max-width: 640px; margin: 0 auto 36px; }
+        .hero p { font-size: 18px; color: #64748b; max-width: 660px; margin: 0 auto 36px; }
         .btn-cta {
             display: inline-block;
             background: linear-gradient(90deg, #4f46e5, #0ea5e9);
@@ -121,10 +135,9 @@
         @media (max-width: 850px) {
             .mockup-body { grid-template-columns: 1fr; }
             .nav-links { display: none; }
-            .hero h1 { font-size: 36px; }
+            .hero h1 { font-size: 34px; }
         }
 
-        /* Doira grafik (Donut Chart) */
         .chart-card { background: #ffffff; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center; }
         .donut {
             width: 170px;
@@ -150,7 +163,6 @@
         }
         .donut-hole span { font-size: 12px; font-weight: 500; color: #64748b; }
 
-        /* Jadval maketi */
         .table-card { background: #ffffff; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; }
         .mock-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
         .mock-row:last-child { border-bottom: none; }
@@ -158,7 +170,6 @@
         .pill-amber { background: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
         .pill-red { background: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
 
-        /* Mobil telefon maketi (O'ng pastda) */
         .phone-mockup {
             position: absolute;
             right: 40px;
@@ -182,21 +193,26 @@
     <header>
         <a href="/" class="logo"><span class="logo-icon">V</span> Verifik PRO</a>
         <nav class="nav-links">
-            <a href="#features">Imkoniyatlar</a>
-            <a href="#devices">Face ID Qurilmalar</a>
-            <a href="#pricing">Tariflar</a>
+            <a href="#features" data-i18n="nav_features">Imkoniyatlar</a>
+            <a href="#features" data-i18n="nav_devices">Face ID Qurilmalar</a>
+            <a href="#features" data-i18n="nav_pricing">Tariflar</a>
         </nav>
         <div class="auth-buttons">
-            <a href="/login/" class="btn-login">➔ Kirish</a>
-            <a href="/register/" class="btn-trial">14 kun bepul</a>
+            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
+                <option value="uz">🇺🇿 UZ</option>
+                <option value="ru">🇷🇺 RU</option>
+                <option value="en">🇬🇧 EN</option>
+            </select>
+            <a href="/login/" class="btn-login" data-i18n="btn_login">➔ Kirish</a>
+            <a href="/register/" class="btn-trial" data-i18n="btn_trial">14 kun bepul</a>
         </div>
     </header>
 
     <section class="hero">
-        <div class="badge-top">🏢 360+ kompaniyalar tanlovi &nbsp;|&nbsp; Zamonaviy HRM va Face ID platformasi</div>
-        <h1>Biznesingizni <span>ortiqcha ovoragarchiliksiz</span> kengaytiring</h1>
-        <p>Verifik PRO — jamoangiz davomati, ish vaqti va barcha turdagi Face ID qurilmalarini yagona tizimda avtomatlashtiruvchi bulutli platforma.</p>
-        <a href="/register/" class="btn-cta">Transformatsiyani boshlash</a>
+        <div class="badge-top" data-i18n="badge_top">🏢 360+ kompaniyalar tanlovi | Zamonaviy HRM va Face ID platformasi</div>
+        <h1 data-i18n="hero_title">Biznesingizni <span>ortiqcha ovoragarchiliksiz</span> kengaytiring</h1>
+        <p data-i18n="hero_desc">Verifik PRO — jamoangiz davomati, ish vaqti va barcha turdagi Face ID qurilmalarini yagona tizimda avtomatlashtiruvchi bulutli platforma.</p>
+        <a href="/register/" class="btn-cta" data-i18n="btn_cta">Transformatsiyani boshlash</a>
     </section>
 
     <div class="mockup-wrapper" id="features">
@@ -207,21 +223,7 @@
             </div>
             <div class="mockup-body">
                 <div class="chart-card">
-                    <h4 style="font-size: 15px; color: #475569;">Xodimlar davomati statistikasi</h4>
+                    <h4 style="font-size: 15px; color: #475569;" data-i18n="chart_title">Xodimlar davomati statistikasi</h4>
                     <div class="donut">
-                        <div class="donut-hole">125<span>xodimlar</span></div>
+                        <div class="donut-hole">125<span data-i18n="employees_word">xodimlar</span></div>
                     </div>
-                    <div style="font-size: 12px; color: #64748b; display: flex; justify-content: space-around;">
-                        <span>🟢 Vaqtida: 65%</span>
-                        <span>🟡 Kechikdi: 20%</span>
-                        <span>🔴 Kelmadi: 15%</span>
-                    </div>
-                </div>
-                <div class="table-card">
-                    <h4 style="font-size: 15px; color: #475569; margin-bottom: 12px;">Jonli Face ID kirish-chiqish nazorati</h4>
-                    <div class="mock-row">
-                        <strong>Abdusalomov Murodjon</strong>
-                        <span>08:52</span>
-                        <span class="pill-green">● O'z vaqtida</span>
-                    </div>
-                    <div class="mock-row">
