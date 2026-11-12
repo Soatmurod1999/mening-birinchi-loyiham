@@ -9,9 +9,13 @@ from .models import Company, Device, Employee, AttendanceLog
 
 
 def landing_view(request):
-    if request.user.is_authenticated and hasattr(request.user, 'company'):
-        return redirect('dashboard')
+    try:
+        if request.user.is_authenticated and hasattr(request.user, 'company'):
+            return redirect('dashboard')
+    except Exception:
+        pass
     return render(request, 'landing.html')
+
 
 
 def login_view(request):
