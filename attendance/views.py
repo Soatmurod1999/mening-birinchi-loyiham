@@ -17,24 +17,30 @@ def landing_view(request):
     return render(request, 'landing.html')
 
 
-
 def login_view(request):
-    if request.user.is_authenticated and hasattr(request.user, 'company'):
-        return redirect('dashboard')
+    try:
+        if request.user.is_authenticated and hasattr(request.user, 'company'):
+            return redirect('dashboard')
+    except Exception:
+        pass
+
     error = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            if hasattr(user, 'company'):
-                if user.company.is_active:
-                    login(request, user)
-                    return redirect('dashboard')
+            try:
+                if hasattr(user, 'company'):
+                    if user.company.is_active:
+                        login(request, user)
+                        return redirect('dashboard')
+                    else:
+                        error = "Kompaniyangiz obunasi faol emas. Administrator bilan bog'laning."
                 else:
-                    error = "Kompaniyangiz obunasi faol emas. Administrator bilan bog'laning."
-            else:
-                error = "Bu foydalanuvchiga kompaniya biriktirilmagan (Super-admin /admin/ orqali kiradi)."
+                    error = "Bu foydalanuvchiga kompaniya biriktirilmagan (Super-admin /admin/ orqali kiradi)."
+            except Exception as e:
+                error = f"Baza bilan bog'lanishda xatolik: {str(e)}"
         else:
             error = "Login yoki parol noto'g'ri!"
     return render(request, 'login.html', {'error': error})
@@ -51,7 +57,6 @@ def dashboard_view(request):
         return redirect('/admin/')
     company = request.user.company
 
-    # Xodim yoki Qurilma qo'shish so'rovlari
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'add_employee':
