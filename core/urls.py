@@ -22,9 +22,10 @@ urlpatterns = [
 ]
 from django.contrib import admin
 from django.urls import path
-from attendance.views import universal_webhook
+from attendance.views import universal_webhook, dashboard_view
 
 urlpatterns = [
+    path('', dashboard_view, name='dashboard'),
     path('admin/', admin.site.urls),
     path('api/webhook/<uuid:token>/', universal_webhook, name='universal_webhook'),
 ]

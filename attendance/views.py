@@ -1,3 +1,4 @@
+from django.shortcuts import render
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -84,3 +85,36 @@ def universal_webhook(request, token):
         }, status=200)
 
     return JsonResponse({'status': 'error', 'message': 'Noto‘g‘ri so‘rov turi'}, status=405)
+def dashboard_view(request):
+    today = timezone.now().date()
+    total_employees = Employee.objects.filter(is_active=True).count()
+    today_logs = AttendanceLog.objects.filter(timestamp__date=today).select_related('employee', 'device')
+
+    present_employees = set()
+    late_employees = set()
+    logs_data = []
+
+    for log in today_logs:
+        is_late = False
+        if log.event_type == 'in':
+            present_employees.add(log.employee.id)
+            if log.timestamp.time() > log.employee.work_start_time:
+                is_late = True
+                late_employees.add(log.employee.id)
+        logs_data.append({'log': log, 'is_late': is_late})
+
+    present_count = len(present_employees)
+    late_count = len(late_employees)
+    on_time_count = max(0, present_count - late_count)
+    absent_count = max(0, total_employees - present_count)
+
+    context = {
+        'today': today,
+        'total_employees': total_employees,
+        'present_count': present_count,
+        'late_count': late_count,
+        'on_time_count': on_time_count,
+        'absent_count': absent_count,
+        'logs_data': logs_data,
+    }
+    return render(request, 'dashboard.html', context)

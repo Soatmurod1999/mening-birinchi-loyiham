@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workly Tizimi - Boshqaruv Paneli</title>
+    <script src="https://tailwindcss.com"></script>
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans">
+
+    <div class="flex min-h-screen">
+        <!-- Chap menyu (Sidebar) -->
+        <aside class="w-64 bg-slate-900 text-white flex flex-col">
+            <div class="p-6 text-2xl font-bold tracking-wider border-b border-slate-800 text-blue-400">
+                VERIFIK <span class="text-white text-sm font-normal">PRO</span>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="/" class="block py-2.5 px-4 rounded bg-blue-600 text-white font-medium">📊 Boshqaruv paneli</a>
+                <a href="/admin/attendance/employee/" class="block py-2.5 px-4 rounded hover:bg-slate-800 text-slate-300">👥 Xodimlar</a>
+                <a href="/admin/attendance/device/" class="block py-2.5 px-4 rounded hover:bg-slate-800 text-slate-300">📷 Face ID Qurilmalar</a>
+                <a href="/admin/attendance/attendancelog/" class="block py-2.5 px-4 rounded hover:bg-slate-800 text-slate-300">🕒 To'liq jurnal</a>
+            </nav>
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-400">
+                Tizim holati: <span class="text-green-400">● Onlayn</span>
+            </div>
+        </aside>
+
+        <!-- Asosiy qism -->
+        <main class="flex-1 p-8">
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800">Bugungi davomat hisoboti</h1>
+                    <p class="text-sm text-slate-500">Sana: {{ today|date:"d-F, Y" }}</p>
+                </div>
+                <a href="/admin/" class="bg-white border border-slate-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 shadow-sm">
+                    ⚙️ Sozlamalar (Admin)
+                </a>
+            </header>
+
+            <!-- KPI Kartochkalar -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="text-sm text-slate-500 mb-1">Jami faol xodimlar</div>
+                    <div class="text-3xl font-bold text-slate-800">{{ total_employees }}</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 border-l-4 border-l-green-500">
+                    <div class="text-sm text-slate-500 mb-1">Bugun kelganlar</div>
+                    <div class="text-3xl font-bold text-green-600">{{ present_count }}</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 border-l-4 border-l-amber-500">
+                    <div class="text-sm text-slate-500 mb-1">Kechikkanlar</div>
+                    <div class="text-3xl font-bold text-amber-500">{{ late_count }}</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 border-l-4 border-l-red-500">
+                    <div class="text-sm text-slate-500 mb-1">Kelmaganlar</div>
+                    <div class="text-3xl font-bold text-red-600">{{ absent_count }}</div>
+                </div>
+            </div>
+
+            <!-- Grafiklar va Jadval -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Doira grafik -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="text-lg font-semibold mb-4">Bugungi intizom ko'rsatkichi</h2>
+                    <canvas id="disciplineChart" height="220"></canvas>
+                </div>
+
+                <!-- Oxirgi harakatlar jadvali -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <h2 class="text-lg font-semibold mb-4">Jonli kirish-chiqish jurnali</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-xs uppercase text-slate-500">
+                                    <th class="py-3 px-4">Xodim</th>
+                                    <th class="py-3 px-4">Lavozim</th>
+                                    <th class="py-3 px-4">Vaqt</th>
+                                    <th class="py-3 px-4">Harakat</th>
+                                    <th class="py-3 px-4">Holati</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-sm">
+                                {% for item in logs_data %}
+                                <tr class="hover:bg-slate-50">
+                                    <td class="py-3 px-4 font-medium">{{ item.log.employee.full_name }}</td>
+                                    <td class="py-3 px-4 text-slate-500">{{ item.log.employee.department|default:"-" }}</td>
+                                    <td class="py-3 px-4 font-mono">{{ item.log.timestamp|time:"H:i:s" }}</td>
+                                    <td class="py-3 px-4">
+                                        {% if item.log.event_type == 'in' %}
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">Kirish</span>
+                                        {% else %}
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">Chiqish</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        {% if item.is_late %}
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">Kechikdi</span>
+                                        {% else %}
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">O'z vaqtida</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="py-8 text-center text-slate-400">Bugun hali kirish-chiqish qayd etilmagan</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('disciplineChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["O'z vaqtida", 'Kechikkanlar', 'Kelmaganlar'],
+                datasets: [{
+                    data: [{{ on_time_count }}, {{ late_count }}, {{ absent_count }}],
+                    backgroundColor: ['#22c55e', '#f59e0b', '#ef4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+    </script>
+</body>
+</html>
