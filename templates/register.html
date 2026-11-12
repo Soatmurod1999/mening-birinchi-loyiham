@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14 kunlik bepul sinov — VERIFIK PRO</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body {
+            background: radial-gradient(circle at 20% 20%, #e0e7ff 0%, #ffffff 50%, #f3e8ff 100%);
+            display: flex; align-items: center; justify-content: center; min-height: 100vh; color: #0f172a;
+        }
+        .box { background: #ffffff; padding: 40px; border-radius: 20px; width: 100%; max-width: 440px; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1); border: 1px solid #e2e8f0; }
+        .logo { text-align: center; font-size: 26px; font-weight: 800; color: #4f46e5; margin-bottom: 6px; }
+        .subtitle { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 28px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #334155; }
+        input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 14px; outline: none; }
+        input:focus { border-color: #4f46e5; }
+        button { width: 100%; padding: 14px; background: linear-gradient(90deg, #4f46e5, #0ea5e9); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .error { background: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; text-align: center; }
+        .link { display: block; text-align: center; margin-top: 18px; color: #4f46e5; text-decoration: none; font-size: 13px; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="logo">Verifik PRO</div>
+        <div class="subtitle">14 kunlik bepul sinov kabinetini yarating</div>
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Kompaniya nomi</label>
+                <input type="text" name="company_name" required placeholder="Masalan: Artel Group">
+            </div>
+            <div class="form-group">
+                <label>Login (Tizimga kirish uchun)</label>
+                <input type="text" name="username" required placeholder="Masalan: artel_hr">
+            </div>
+            <div class="form-group">
+                <label>Parol</label>
+                <input type="password" name="password" required placeholder="Kamida 6 ta belgi">
+            </div>
+            <button type="submit">Bepul boshlash ➔</button>
+        </form>
+        <a href="/login/" class="link">Allaqachon akkauntingiz bormi? Kirish</a>
+    </div>
+</body>
+</html>

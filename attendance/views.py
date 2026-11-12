@@ -1,9 +1,12 @@
 import json
+import base64
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import Company, Device, Employee, AttendanceLog
 
@@ -15,6 +18,28 @@ def landing_view(request):
     except Exception:
         pass
     return render(request, 'landing.html')
+
+
+def register_view(request):
+    try:
+        if request.user.is_authenticated and hasattr(request.user, 'company'):
+            return redirect('dashboard')
+    except Exception:
+        pass
+
+    error = None
+    if request.method == 'POST':
+        company_name = request.POST.get('company_name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if User.objects.filter(username=username).exists():
+            error = "Bu login band, iltimos boshqa login tanlang!"
+        else:
+            user = User.objects.create_user(username=username, password=password)
+            Company.objects.create(name=company_name, owner=user, is_active=True)
+            login(request, user)
+            return redirect('dashboard')
+    return render(request, 'register.html', {'error': error})
 
 
 def login_view(request):
@@ -40,7 +65,7 @@ def login_view(request):
                 else:
                     error = "Bu foydalanuvchiga kompaniya biriktirilmagan (Super-admin /admin/ orqali kiradi)."
             except Exception as e:
-                error = f"Baza bilan bog'lanishda xatolik: {str(e)}"
+                error = f"Xatolik: {str(e)}"
         else:
             error = "Login yoki parol noto'g'ri!"
     return render(request, 'login.html', {'error': error})
@@ -60,12 +85,19 @@ def dashboard_view(request):
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'add_employee':
+            photo_data = None
+            photo_file = request.FILES.get('photo')
+            if photo_file:
+                encoded = base64.b64encode(photo_file.read()).decode('utf-8')
+                photo_data = f"data:{photo_file.content_type};base64,{encoded}"
+
             Employee.objects.create(
                 company=company,
                 full_name=request.POST.get('full_name'),
                 device_user_id=request.POST.get('device_user_id'),
                 department=request.POST.get('department', ''),
-                work_start_time=request.POST.get('work_start_time', '09:00')
+                work_start_time=request.POST.get('work_start_time', '09:00'),
+                photo_base64=photo_data
             )
             return redirect('dashboard')
         elif action == 'add_device':
@@ -82,32 +114,42 @@ def dashboard_view(request):
     devices = Device.objects.filter(company=company, is_active=True)
     today_logs = AttendanceLog.objects.filter(company=company, timestamp__date=today).select_related('employee', 'device')
 
-    present_employees = set()
-    late_employees = set()
+    present_employees = {}
+    late_employees = {}
     logs_data = []
 
     for log in today_logs:
         is_late = False
+        late_minutes = 0
         if log.event_type == 'in':
-            present_employees.add(log.employee.id)
+            present_employees[log.employee.id] = log
             if log.timestamp.time() > log.employee.work_start_time:
                 is_late = True
-                late_employees.add(log.employee.id)
-        logs_data.append({'log': log, 'is_late': is_late})
+                t1 = datetime.combine(today, log.employee.work_start_time)
+                t2 = datetime.combine(today, log.timestamp.time())
+                late_minutes = int((t2 - t1).total_seconds() // 60)
+                late_employees[log.employee.id] = {'employee': log.employee, 'time': log.timestamp, 'minutes': late_minutes}
+        logs_data.append({'log': log, 'is_late': is_late, 'late_minutes': late_minutes})
 
+    absent_list = [emp for emp in employees if emp.id not in present_employees]
     total_employees = employees.count()
     present_count = len(present_employees)
     late_count = len(late_employees)
-    absent_count = max(0, total_employees - present_count)
+    on_time_count = max(0, present_count - late_count)
+    absent_count = len(absent_list)
 
     context = {
         'company': company,
         'today': today,
+        'employees': employees,
         'devices': devices,
         'total_employees': total_employees,
         'present_count': present_count,
         'late_count': late_count,
+        'on_time_count': on_time_count,
         'absent_count': absent_count,
+        'absent_list': absent_list,
+        'late_list': list(late_employees.values()),
         'logs_data': logs_data,
     }
     return render(request, 'dashboard.html', context)

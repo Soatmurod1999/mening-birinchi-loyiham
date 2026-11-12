@@ -3,55 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VERIFIK PRO — Xodimlar davomati va Face ID tizimi</title>
+    <title>VERIFIK PRO — Biznesingizni avtomatlashtiring</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; line-height: 1.6; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 24px 8%; border-bottom: 1px solid #1e293b; }
-        .logo { font-size: 24px; font-weight: 800; color: #38bdf8; letter-spacing: 1px; }
-        .logo span { background: #2563eb; color: #fff; font-size: 12px; padding: 2px 6px; border-radius: 4px; }
-        .btn-login { background: #2563eb; color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: 0.2s; }
-        .btn-login:hover { background: #1d4ed8; }
-        
-        .hero { text-align: center; padding: 100px 8% 80px; max-width: 900px; margin: 0 auto; }
-        .hero h1 { font-size: 46px; font-weight: 800; line-height: 1.2; margin-bottom: 24px; background: linear-gradient(to right, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 40px; }
-        .btn-primary { background: #38bdf8; color: #0f172a; padding: 16px 36px; border-radius: 10px; text-decoration: none; font-size: 16px; font-weight: 700; display: inline-block; transition: 0.2s; }
-        .btn-primary:hover { background: #7dd3fc; transform: translateY(-2px); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; }
+        body {
+            background: radial-gradient(circle at 15% 20%, #e0e7ff 0%, #ffffff 45%, #f3e8ff 100%);
+            color: #0f172a;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; padding: 40px 8% 100px; }
-        .feature-card { background: #1e293b; padding: 32px; border-radius: 16px; border: 1px solid #334155; }
-        .feature-card h3 { font-size: 20px; margin-bottom: 12px; color: #38bdf8; }
-        .feature-card p { color: #cbd5e1; font-size: 15px; }
+        /* Navbar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .logo { font-size: 24px; font-weight: 800; color: #3b82f6; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6, #6366f1); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; }
+        
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a { text-decoration: none; color: #475569; font-size: 15px; font-weight: 500; transition: 0.2s; }
+        .nav-links a:hover { color: #3b82f6; }
+
+        .auth-buttons { display: flex; align-items: center; gap: 16px; }
+        .btn-login { text-decoration: none; color: #1e293b; font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 99px; transition: 0.2s; }
+        .btn-login:hover { background: #f1f5f9; }
+        .btn-trial {
+            text-decoration: none;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: #ffffff;
+            padding: 10px 22px;
+            border-radius: 99px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+            transition: 0.2s;
+        }
+        .btn-trial:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45); }
+
+        /* Hero Section */
+        .hero { text-align: center; padding: 70px 8% 40px; max-width: 960px; margin: 0 auto; }
+        .badge-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .hero h1 { font-size: 54px; font-weight: 800; line-height: 1.15; letter-spacing: -1px; margin-bottom: 20px; color: #0f172a; }
+        .hero h1 span {
+            background: linear-gradient(90deg, #4f46e5, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p { font-size: 18px; color: #64748b; max-width: 640px; margin: 0 auto 36px; }
+        .btn-cta {
+            display: inline-block;
+            background: linear-gradient(90deg, #4f46e5, #0ea5e9);
+            color: #ffffff;
+            padding: 16px 38px;
+            border-radius: 99px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+            transition: 0.25s;
+        }
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(79, 70, 229, 0.4); }
+
+        /* Dashboard & Mobile Mockup Preview */
+        .mockup-wrapper {
+            max-width: 1120px;
+            margin: 40px auto 80px;
+            padding: 0 20px;
+            position: relative;
+        }
+        .browser-window {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.15);
+            overflow: hidden;
+        }
+        .browser-header {
+            background: #f8fafc;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; }
+        .url-bar { margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; padding: 4px 40px; border-radius: 6px; font-size: 12px; color: #64748b; }
+
+        .mockup-body {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 24px;
+            padding: 32px;
+            background: #f8fafc;
+        }
+        @media (max-width: 850px) {
+            .mockup-body { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 36px; }
+        }
+
+        /* Doira grafik (Donut Chart) */
+        .chart-card { background: #ffffff; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center; }
+        .donut {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: conic-gradient(#22c55e 0% 65%, #f59e0b 65% 85%, #ef4444 85% 100%);
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .donut-hole {
+            width: 110px;
+            height: 110px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 22px;
+        }
+        .donut-hole span { font-size: 12px; font-weight: 500; color: #64748b; }
+
+        /* Jadval maketi */
+        .table-card { background: #ffffff; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; }
+        .mock-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        .mock-row:last-child { border-bottom: none; }
+        .pill-green { background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+        .pill-amber { background: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+        .pill-red { background: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+
+        /* Mobil telefon maketi (O'ng pastda) */
+        .phone-mockup {
+            position: absolute;
+            right: 40px;
+            bottom: -30px;
+            width: 240px;
+            background: #ffffff;
+            border-radius: 28px;
+            border: 6px solid #0f172a;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+            padding: 18px;
+            text-align: center;
+        }
+        @media (max-width: 950px) { .phone-mockup { display: none; } }
+        .phone-time { font-size: 26px; font-weight: 800; color: #0f172a; margin: 12px 0; }
+        .phone-btns { display: flex; gap: 6px; margin-top: 16px; }
+        .p-btn { flex: 1; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; color: #fff; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">VERIFIK <span>PRO</span></div>
-        <a href="/login/" class="btn-login">Tizimga kirish</a>
+        <a href="/" class="logo"><span class="logo-icon">V</span> Verifik PRO</a>
+        <nav class="nav-links">
+            <a href="#features">Imkoniyatlar</a>
+            <a href="#devices">Face ID Qurilmalar</a>
+            <a href="#pricing">Tariflar</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="/login/" class="btn-login">➔ Kirish</a>
+            <a href="/register/" class="btn-trial">14 kun bepul</a>
+        </div>
     </header>
 
     <section class="hero">
-        <h1>Kompaniyangiz davomati va ish vaqtini avtomatlashtiring</h1>
-        <p>Hikvision, Dahua, ZKTeco va barcha turdagi Face ID qurilmalarini yagona bulutli platformaga ulang. Kechikishlarni kuzating va aniq hisobotlar oling.</p>
-        <a href="/login/" class="btn-primary">Kabinetga kirish ➔</a>
+        <div class="badge-top">🏢 360+ kompaniyalar tanlovi &nbsp;|&nbsp; Zamonaviy HRM va Face ID platformasi</div>
+        <h1>Biznesingizni <span>ortiqcha ovoragarchiliksiz</span> kengaytiring</h1>
+        <p>Verifik PRO — jamoangiz davomati, ish vaqti va barcha turdagi Face ID qurilmalarini yagona tizimda avtomatlashtiruvchi bulutli platforma.</p>
+        <a href="/register/" class="btn-cta">Transformatsiyani boshlash</a>
     </section>
 
-    <section class="features">
-        <div class="feature-card">
-            <h3>📷 Universal Face ID</h3>
-            <p>Barcha mashhur brend qurilmalari bilan to'g'ridan-to'g'ri Webhook orqali bir necha soniyada integratsiya qilinadi.</p>
-        </div>
-        <div class="feature-card">
-            <h3>📊 Jonli Hisobotlar</h3>
-            <p>Kim soat nechada kelgani, nechchi daqiqa kechikkani va ish soatlari avtomatik hisoblanadi.</p>
-        </div>
-        <div class="feature-card">
-            <h3>🏢 Ko'p filialli tizim</h3>
-            <p>Har bir kompaniya o'zining yopiq kabinetida xodimlar va qurilmalarni mustaqil boshqaradi.</p>
-        </div>
-    </section>
-
-</body>
-</html>
+    <div class="mockup-wrapper" id="features">
+        <div class="browser-window">
+            <div class="browser-header">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <div class="url-bar">🔒 app.verifik-pro.uz</div>
+            </div>
+            <div class="mockup-body">
+                <div class="chart-card">
+                    <h4 style="font-size: 15px; color: #475569;">Xodimlar davomati statistikasi</h4>
+                    <div class="donut">
+                        <div class="donut-hole">125<span>xodimlar</span></div>
+                    </div>
+                    <div style="font-size: 12px; color: #64748b; display: flex; justify-content: space-around;">
+                        <span>🟢 Vaqtida: 65%</span>
+                        <span>🟡 Kechikdi: 20%</span>
+                        <span>🔴 Kelmadi: 15%</span>
+                    </div>
+                </div>
+                <div class="table-card">
+                    <h4 style="font-size: 15px; color: #475569; margin-bottom: 12px;">Jonli Face ID kirish-chiqish nazorati</h4>
+                    <div class="mock-row">
+                        <strong>Abdusalomov Murodjon</strong>
+                        <span>08:52</span>
+                        <span class="pill-green">● O'z vaqtida</span>
+                    </div>
+                    <div class="mock-row">
