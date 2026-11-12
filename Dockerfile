@@ -12,6 +12,7 @@ COPY . /app/
 
 RUN python manage.py collectstatic --noinput
 
-CMD ["sh", "-c", "python manage.py migrate attendance zero --fake || true && python manage.py migrate && python manage.py createsuperuser --noinput || true && gunicorn core.wsgi:application --bind 0.0.0.0:${PORT:-10000}"]
+CMD ["sh", "-c", "python manage.py shell -c 'from django.db import connection; c = connection.cursor(); c.execute(\"DROP TABLE IF EXISTS attendance_attendancelog, attendance_employee, attendance_device, attendance_company CASCADE; DELETE FROM django_migrations WHERE app = %s;\", [\"attendance\"])' && python manage.py migrate && python manage.py createsuperuser --noinput || true && gunicorn core.wsgi:application --bind 0.0.0.0:${PORT:-10000}"]
+
 
 
