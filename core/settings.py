@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@354p$h+-amdk^$6b5sa@8cz!^-6o^%7%t=wcu=d^v#o3q)dm6'
 
 # Production rejimi
-DEBUG = False
+DEBUG = True
 
 # Barcha domenlarga ruxsat berish
 ALLOWED_HOSTS = ['*']
