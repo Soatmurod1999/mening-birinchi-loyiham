@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@354p$h+-amdk^$6b5sa@8cz!^-6o^%7%t=wcu=d^v#o3q)dm6'
 
 # Ishlab chiqish rejimi
-DEBUG = True
+DEBUG = False
 
 # Barcha domenlarga ruxsat berish
 ALLOWED_HOSTS = ['*']
@@ -185,6 +185,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
