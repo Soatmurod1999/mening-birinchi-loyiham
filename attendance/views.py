@@ -17,7 +17,10 @@ def landing_view(request):
             return redirect('dashboard')
     except Exception:
         pass
-    return render(request, 'landing.html')
+    lang = request.GET.get('lang', 'uz')
+    if lang not in ['uz', 'ru', 'en']:
+        lang = 'uz'
+    return render(request, 'landing.html', {'lang': lang})
 
 
 def register_view(request):

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="{{ lang }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,13 +13,12 @@
             overflow-x: hidden;
         }
 
-        /* Navbar */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 18px 8%;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
@@ -33,20 +32,12 @@
         .nav-links a { text-decoration: none; color: #475569; font-size: 15px; font-weight: 500; transition: 0.2s; }
         .nav-links a:hover { color: #3b82f6; }
 
-        .auth-buttons { display: flex; align-items: center; gap: 12px; }
+        .auth-buttons { display: flex; align-items: center; gap: 10px; }
         
-        /* Til tanlash tugmasi */
-        .lang-select {
-            padding: 8px 12px;
-            border-radius: 99px;
-            border: 1px solid #cbd5e1;
-            background: #ffffff;
-            color: #1e293b;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            outline: none;
-        }
+        /* Til tugmalari */
+        .lang-group { display: flex; background: #f1f5f9; padding: 3px; border-radius: 99px; border: 1px solid #e2e8f0; }
+        .lang-btn { text-decoration: none; padding: 5px 10px; border-radius: 99px; font-size: 12px; font-weight: 700; color: #64748b; transition: 0.2s; }
+        .lang-btn.active { background: #ffffff; color: #4f46e5; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
         .btn-login { text-decoration: none; color: #1e293b; font-weight: 600; font-size: 14px; padding: 10px 16px; border-radius: 99px; transition: 0.2s; }
         .btn-login:hover { background: #f1f5f9; }
@@ -61,9 +52,8 @@
             box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
             transition: 0.2s;
         }
-        .btn-trial:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45); }
+        .btn-trial:hover { transform: translateY(-1px); }
 
-        /* Hero Section */
         .hero { text-align: center; padding: 70px 8% 40px; max-width: 960px; margin: 0 auto; }
         .badge-top {
             display: inline-flex;
@@ -98,90 +88,27 @@
             box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
             transition: 0.25s;
         }
-        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(79, 70, 229, 0.4); }
 
-        /* Dashboard & Mobile Mockup Preview */
-        .mockup-wrapper {
-            max-width: 1120px;
-            margin: 40px auto 80px;
-            padding: 0 20px;
-            position: relative;
-        }
-        .browser-window {
-            background: #ffffff;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.15);
-            overflow: hidden;
-        }
-        .browser-header {
-            background: #f8fafc;
-            padding: 12px 20px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .mockup-wrapper { max-width: 1120px; margin: 40px auto 80px; padding: 0 20px; position: relative; }
+        .browser-window { background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.15); overflow: hidden; }
+        .browser-header { background: #f8fafc; padding: 12px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
         .dot { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; }
         .url-bar { margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; padding: 4px 40px; border-radius: 6px; font-size: 12px; color: #64748b; }
-
-        .mockup-body {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 24px;
-            padding: 32px;
-            background: #f8fafc;
-        }
-        @media (max-width: 850px) {
-            .mockup-body { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-            .hero h1 { font-size: 34px; }
-        }
+        .mockup-body { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; padding: 32px; background: #f8fafc; }
+        @media (max-width: 850px) { .mockup-body { grid-template-columns: 1fr; } .nav-links { display: none; } .hero h1 { font-size: 34px; } }
 
         .chart-card { background: #ffffff; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; text-align: center; }
-        .donut {
-            width: 170px;
-            height: 170px;
-            border-radius: 50%;
-            background: conic-gradient(#22c55e 0% 65%, #f59e0b 65% 85%, #ef4444 85% 100%);
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .donut-hole {
-            width: 110px;
-            height: 110px;
-            background: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 22px;
-        }
+        .donut { width: 170px; height: 170px; border-radius: 50%; background: conic-gradient(#22c55e 0% 65%, #f59e0b 65% 85%, #ef4444 85% 100%); margin: 20px auto; display: flex; align-items: center; justify-content: center; }
+        .donut-hole { width: 110px; height: 110px; background: #ffffff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; }
         .donut-hole span { font-size: 12px; font-weight: 500; color: #64748b; }
 
         .table-card { background: #ffffff; padding: 24px; border-radius: 16px; border: 1px solid #e2e8f0; }
         .mock-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
-        .mock-row:last-child { border-bottom: none; }
         .pill-green { background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
         .pill-amber { background: #fef3c7; color: #b45309; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
         .pill-red { background: #fee2e2; color: #b91c1c; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; }
 
-        .phone-mockup {
-            position: absolute;
-            right: 40px;
-            bottom: -30px;
-            width: 240px;
-            background: #ffffff;
-            border-radius: 28px;
-            border: 6px solid #0f172a;
-            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
-            padding: 18px;
-            text-align: center;
-        }
+        .phone-mockup { position: absolute; right: 40px; bottom: -30px; width: 240px; background: #ffffff; border-radius: 28px; border: 6px solid #0f172a; box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25); padding: 18px; text-align: center; }
         @media (max-width: 950px) { .phone-mockup { display: none; } }
         .phone-time { font-size: 26px; font-weight: 800; color: #0f172a; margin: 12px 0; }
         .phone-btns { display: flex; gap: 6px; margin-top: 16px; }
@@ -191,28 +118,42 @@
 <body>
 
     <header>
-        <a href="/" class="logo"><span class="logo-icon">V</span> Verifik PRO</a>
+        <a href="/?lang={{ lang }}" class="logo"><span class="logo-icon">V</span> Verifik PRO</a>
         <nav class="nav-links">
-            <a href="#features" data-i18n="nav_features">Imkoniyatlar</a>
-            <a href="#features" data-i18n="nav_devices">Face ID Qurilmalar</a>
-            <a href="#features" data-i18n="nav_pricing">Tariflar</a>
+            <a href="#features">{% if lang == 'ru' %}Продукты{% elif lang == 'en' %}Products{% else %}Imkoniyatlar{% endif %}</a>
+            <a href="#features">{% if lang == 'ru' %}Face ID Устройства{% elif lang == 'en' %}Face ID Devices{% else %}Face ID Qurilmalar{% endif %}</a>
+            <a href="#features">{% if lang == 'ru' %}Тарифы{% elif lang == 'en' %}Pricing{% else %}Tariflar{% endif %}</a>
         </nav>
         <div class="auth-buttons">
-            <select id="langSwitcher" class="lang-select" onchange="changeLanguage(this.value)">
-                <option value="uz">🇺🇿 UZ</option>
-                <option value="ru">🇷🇺 RU</option>
-                <option value="en">🇬🇧 EN</option>
-            </select>
-            <a href="/login/" class="btn-login" data-i18n="btn_login">➔ Kirish</a>
-            <a href="/register/" class="btn-trial" data-i18n="btn_trial">14 kun bepul</a>
+            <div class="lang-group">
+                <a href="/?lang=uz" class="lang-btn {% if lang == 'uz' %}active{% endif %}">UZ</a>
+                <a href="/?lang=ru" class="lang-btn {% if lang == 'ru' %}active{% endif %}">RU</a>
+                <a href="/?lang=en" class="lang-btn {% if lang == 'en' %}active{% endif %}">EN</a>
+            </div>
+            <a href="/login/" class="btn-login">{% if lang == 'ru' %}➔ Войти{% elif lang == 'en' %}➔ Log in{% else %}➔ Kirish{% endif %}</a>
+            <a href="/register/" class="btn-trial">{% if lang == 'ru' %}14 дней бесплатно{% elif lang == 'en' %}14 days free{% else %}14 kun bepul{% endif %}</a>
         </div>
     </header>
 
     <section class="hero">
-        <div class="badge-top" data-i18n="badge_top">🏢 360+ kompaniyalar tanlovi | Zamonaviy HRM va Face ID platformasi</div>
-        <h1 data-i18n="hero_title">Biznesingizni <span>ortiqcha ovoragarchiliksiz</span> kengaytiring</h1>
-        <p data-i18n="hero_desc">Verifik PRO — jamoangiz davomati, ish vaqti va barcha turdagi Face ID qurilmalarini yagona tizimda avtomatlashtiruvchi bulutli platforma.</p>
-        <a href="/register/" class="btn-cta" data-i18n="btn_cta">Transformatsiyani boshlash</a>
+        <div class="badge-top">
+            {% if lang == 'ru' %}🏢 360+ компаний | HRM платформа для бизнеса в СНГ
+            {% elif lang == 'en' %}🏢 360+ companies | HRM platform for modern businesses
+            {% else %}🏢 360+ kompaniyalar tanlovi | Zamonaviy HRM va Face ID platformasi{% endif %}
+        </div>
+        <h1>
+            {% if lang == 'ru' %}Масштабируйте бизнес <span>без лишней рутины</span>
+            {% elif lang == 'en' %}Scale your business, <span>without extra routine</span>
+            {% else %}Biznesingizni <span>ortiqcha ovoragarchiliksiz</span> kengaytiring{% endif %}
+        </h1>
+        <p>
+            {% if lang == 'ru' %}Verifik PRO — единая облачная операционная система для автоматизации учета рабочего времени, Face ID терминалов и контроля команды.
+            {% elif lang == 'en' %}Verifik PRO is a unified operating system to automate your team's attendance, Face ID terminals, and payroll tracking.
+            {% else %}Verifik PRO — jamoangiz davomati, ish vaqti va barcha turdagi Face ID qurilmalarini yagona tizimda avtomatlashtiruvchi bulutli platforma.{% endif %}
+        </p>
+        <a href="/register/" class="btn-cta">
+            {% if lang == 'ru' %}Начать трансформацию{% elif lang == 'en' %}Start the transformation{% else %}Transformatsiyani boshlash{% endif %}
+        </a>
     </section>
 
     <div class="mockup-wrapper" id="features">
@@ -223,7 +164,3 @@
             </div>
             <div class="mockup-body">
                 <div class="chart-card">
-                    <h4 style="font-size: 15px; color: #475569;" data-i18n="chart_title">Xodimlar davomati statistikasi</h4>
-                    <div class="donut">
-                        <div class="donut-hole">125<span data-i18n="employees_word">xodimlar</span></div>
-                    </div>
